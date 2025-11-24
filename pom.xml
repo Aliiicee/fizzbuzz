@@ -93,9 +93,6 @@
                         <include>**/*Test.java</include>
                         <include>**/*Tests.java</include>
                     </includes>
-                    <systemPropertyVariables>
-                        <java.util.logging.config.file>src/test/resources/logging.properties</java.util.logging.config.file>
-                    </systemPropertyVariables>
                 </configuration>
             </plugin>
 
