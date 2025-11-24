@@ -49,9 +49,18 @@ public class FizzBuzzStepDefinitions {
     
     @And("the sequence should follow FizzBuzz rules for all numbers")
     public void theSequenceShouldFollowFizzBuzzRulesForAllNumbers() {
-        for (int i = 1; i <= 100; i++) {
+        for (int i = 1; i <= sequence.length; i++) {
             String expected = getExpectedFizzBuzzValue(i);
-            assertEquals(expected, sequence[i - 1], 
+            assertEquals(expected, sequence[i - 1],
+                "Mismatch at position " + i + " (number " + i + ")");
+        }
+    }
+
+    @And("the sequence should follow enhanced FizzBuzz rules for all numbers")
+    public void the_sequence_should_follow_enhanced_fizz_buzz_rules_for_all_numbers() {
+        for (int i = 1; i <= sequence.length; i++) {
+            String expected = getExpectedEnhancedFizzBuzzValue(i);
+            assertEquals(expected, sequence[i - 1],
                 "Mismatch at position " + i + " (number " + i + ")");
         }
     }
@@ -69,7 +78,7 @@ public class FizzBuzzStepDefinitions {
 
     /**
      * Helper method to determine the expected FizzBuzz value for a given number.
-     * This follows the FizzBuzz rules:
+     * This follows the classic FizzBuzz rules:
      * - Non-positive numbers return themselves as strings (edge cases)
      * - Multiples of both 3 and 5 return "FizzBuzz"
      * - Multiples of 3 return "Fizz"
@@ -89,5 +98,49 @@ public class FizzBuzzStepDefinitions {
         } else {
             return String.valueOf(number);
         }
+    }
+
+    /**
+     * Helper method to determine the expected enhanced FizzBuzz value for a given number.
+     * This follows the enhanced FizzBuzz rules:
+     * - Non-positive numbers return themselves as strings (edge cases)
+     * - Return "FizzBuzz" if number is multiple of both 3 and 5 OR contains both digits 3 and 5
+     * - Return "Fizz" if number is multiple of 3 OR contains digit 3
+     * - Return "Buzz" if number is multiple of 5 OR contains digit 5
+     * - All other numbers return themselves as strings
+     */
+    private String getExpectedEnhancedFizzBuzzValue(int number) {
+        if (number <= 0) {
+            return String.valueOf(number);
+        }
+
+        boolean isMultipleOf3 = number % 3 == 0;
+        boolean isMultipleOf5 = number % 5 == 0;
+        boolean contains3 = containsDigit(number, 3);
+        boolean contains5 = containsDigit(number, 5);
+
+        boolean shouldFizz = isMultipleOf3 || contains3;
+        boolean shouldBuzz = isMultipleOf5 || contains5;
+
+        if (shouldFizz && shouldBuzz) {
+            return "FizzBuzz";
+        } else if (shouldFizz) {
+            return "Fizz";
+        } else if (shouldBuzz) {
+            return "Buzz";
+        } else {
+            return String.valueOf(number);
+        }
+    }
+
+    /**
+     * Helper method to check if a number contains a specific digit.
+     */
+    private boolean containsDigit(int number, int digit) {
+        if (number < 0) {
+            number = Math.abs(number);
+        }
+        String numberStr = String.valueOf(number);
+        return numberStr.contains(String.valueOf(digit));
     }
 }

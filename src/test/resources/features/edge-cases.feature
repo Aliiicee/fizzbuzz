@@ -1,7 +1,8 @@
-Feature: FizzBuzz Edge Cases
-  As a user of the FizzBuzz application
+Feature: Enhanced FizzBuzz Edge Cases
+  As a user of the enhanced FizzBuzz application
   I want to handle edge cases like zero and negative numbers correctly
   So that the application behaves predictably for all integer inputs
+  Note: Negative numbers and zero should return as strings, not follow FizzBuzz rules
 
   Scenario: Process zero
     Given I have the number 0

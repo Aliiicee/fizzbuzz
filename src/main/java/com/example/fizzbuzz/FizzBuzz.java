@@ -13,12 +13,13 @@ public class FizzBuzz {
     }
 
     /**
-     * Processes a number according to FizzBuzz rules.
+     * Processes a number according to enhanced FizzBuzz rules.
      * Handles non-positive numbers as special cases since traditional FizzBuzz is for positive integers.
      *
      * @param number the input number to process
-     * @return "Fizz" if divisible by 3, "Buzz" if divisible by 5,
-     *         "FizzBuzz" if divisible by both 3 and 5, or the number as string otherwise
+     * @return "Fizz" if divisible by 3 or contains digit 3, "Buzz" if divisible by 5 or contains digit 5,
+     *         "FizzBuzz" if divisible by both 3 and 5 or contains both digits 3 and 5,
+     *         or the number as string otherwise
      */
     public String process(int number) {
         // Handle non-positive numbers as special cases since traditional FizzBuzz starts from 1
@@ -26,15 +27,39 @@ public class FizzBuzz {
             return String.valueOf(number);
         }
 
-        if (number % 15 == 0) {
+        boolean isMultipleOf3 = number % 3 == 0;
+        boolean isMultipleOf5 = number % 5 == 0;
+        boolean contains3 = containsDigit(number, 3);
+        boolean contains5 = containsDigit(number, 5);
+
+        boolean shouldFizz = isMultipleOf3 || contains3;
+        boolean shouldBuzz = isMultipleOf5 || contains5;
+
+        if (shouldFizz && shouldBuzz) {
             return "FizzBuzz";
-        } else if (number % 3 == 0) {
+        } else if (shouldFizz) {
             return "Fizz";
-        } else if (number % 5 == 0) {
+        } else if (shouldBuzz) {
             return "Buzz";
         } else {
             return String.valueOf(number);
         }
+    }
+
+    /**
+     * Helper method to check if a number contains a specific digit.
+     *
+     * @param number the number to check
+     * @param digit the digit to look for (0-9)
+     * @return true if the number contains the digit, false otherwise
+     */
+    private boolean containsDigit(int number, int digit) {
+        if (number < 0) {
+            number = Math.abs(number);
+        }
+
+        String numberStr = String.valueOf(number);
+        return numberStr.contains(String.valueOf(digit));
     }
 
     /**
