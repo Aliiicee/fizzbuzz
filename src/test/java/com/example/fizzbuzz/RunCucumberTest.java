@@ -1,19 +1,15 @@
 package com.example.fizzbuzz;
 
-import io.cucumber.junit.Cucumber;
-import io.cucumber.junit.CucumberOptions;
-import org.junit.runner.RunWith;
+import org.junit.platform.suite.api.IncludeEngines;
+import org.junit.platform.suite.api.SelectClasspathResource;
+import org.junit.platform.suite.api.Suite;
 
 /**
  * Cucumber test runner class.
  * This class runs all the feature files in the features directory.
  */
-@RunWith(Cucumber.class)
-@CucumberOptions(
-    features = "src/test/resources/features",
-    glue = "com.example.fizzbuzz.stepdefinitions",
-    plugin = {"pretty", "html:target/cucumber-reports.html"},
-    monochrome = true
-)
+@Suite
+@IncludeEngines("cucumber")
+@SelectClasspathResource("features")
 public class RunCucumberTest {
 }

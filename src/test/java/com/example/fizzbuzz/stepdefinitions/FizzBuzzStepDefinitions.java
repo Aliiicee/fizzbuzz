@@ -18,6 +18,7 @@ public class FizzBuzzStepDefinitions {
     private int inputNumber;
     private String result;
     private String[] sequence;
+    private int sequenceLimit = -1;
 
     @Given("I have the number {int}")
     public void iHaveTheNumber(int number) {
@@ -35,21 +36,17 @@ public class FizzBuzzStepDefinitions {
         assertEquals(expectedResult, result);
     }
 
-    @Given("I want to generate a FizzBuzz sequence from 1 to 100")
-    public void iWantToGenerateAFizzBuzzSequenceFrom1To100() {
-        fizzBuzz = new FizzBuzz();
-    }
-
+    
     @When("I generate the sequence")
     public void iGenerateTheSequence() {
-        sequence = fizzBuzz.generateSequence(100);
+        // Use sequenceLimit if it's been set (including 0), otherwise default to 100
+        // Use -1 as the "not set" sentinel value instead of 0
+        int limit = (sequenceLimit != -1) ? sequenceLimit : 100;
+        sequence = fizzBuzz.generateSequence(limit);
+        sequenceLimit = -1; // Reset to sentinel value
     }
 
-    @Then("I should get 100 elements")
-    public void iShouldGet100Elements() {
-        assertEquals(100, sequence.length);
-    }
-
+    
     @And("the sequence should follow FizzBuzz rules for all numbers")
     public void theSequenceShouldFollowFizzBuzzRulesForAllNumbers() {
         for (int i = 1; i <= 100; i++) {
@@ -59,15 +56,30 @@ public class FizzBuzzStepDefinitions {
         }
     }
 
+    @Given("I want to generate a FizzBuzz sequence from 1 to {int}")
+    public void iWantToGenerateAFizzBuzzSequenceFrom1To(int limit) {
+        fizzBuzz = new FizzBuzz();
+        this.sequenceLimit = limit;
+    }
+
+    @Then("I should get {int} elements")
+    public void iShouldGetElements(int expectedCount) {
+        assertEquals(expectedCount, sequence.length);
+    }
+
     /**
      * Helper method to determine the expected FizzBuzz value for a given number.
      * This follows the FizzBuzz rules:
+     * - Non-positive numbers return themselves as strings (edge cases)
      * - Multiples of both 3 and 5 return "FizzBuzz"
      * - Multiples of 3 return "Fizz"
      * - Multiples of 5 return "Buzz"
      * - All other numbers return themselves as strings
      */
     private String getExpectedFizzBuzzValue(int number) {
+        if (number <= 0) {
+            return String.valueOf(number);
+        }
         if (number % 15 == 0) {
             return "FizzBuzz";
         } else if (number % 3 == 0) {

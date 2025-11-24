@@ -14,12 +14,18 @@ public class FizzBuzz {
 
     /**
      * Processes a number according to FizzBuzz rules.
+     * Handles non-positive numbers as special cases since traditional FizzBuzz is for positive integers.
      *
      * @param number the input number to process
      * @return "Fizz" if divisible by 3, "Buzz" if divisible by 5,
      *         "FizzBuzz" if divisible by both 3 and 5, or the number as string otherwise
      */
     public String process(int number) {
+        // Handle non-positive numbers as special cases since traditional FizzBuzz starts from 1
+        if (number <= 0) {
+            return String.valueOf(number);
+        }
+
         if (number % 15 == 0) {
             return "FizzBuzz";
         } else if (number % 3 == 0) {
