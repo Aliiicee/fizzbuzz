@@ -1,5 +1,7 @@
 # FizzBuzz
 
+A project of Alice and François
+
 A simple Java 21 Maven project implementing the classic FizzBuzz problem.
 
 ## Project Structure
